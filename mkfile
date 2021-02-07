@@ -3,6 +3,7 @@
 CFLAGS=-FTVw -p -Ishim -Ilua -Ilpeg -DLUA_USE_PLAN9
 
 TARG=$O.lua
+BIN=/$objtype/bin
 
 OBJS=lua.$O
 
@@ -22,6 +23,9 @@ pull:V:
 	@{cd lua; git/pull}
 	@{cd lpeg; git/pull}
 	@{cd shim; git/pull}
+
+install:V: $TARG
+	cp $TARG $BIN/lua
 
 clean:V:
 	@{cd shim; mk clean}
