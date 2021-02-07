@@ -13,6 +13,16 @@ LIBS=\
 
 all:V: $TARG
 
+clone:V:
+	git/clone https://git.sr.ht/~kvik/lua9-lua lua
+	git/clone https://git.sr.ht/~kvik/lua9-lpeg lpeg
+	git/clone https://git.sr.ht/~kvik/lua9-shim shim
+
+pull:V:
+	@{cd lua; git/pull}
+	@{cd lpeg; git/pull}
+	@{cd shim; git/pull}
+
 clean:V:
 	@{cd shim; mk clean}
 	@{cd lua; mk clean}
