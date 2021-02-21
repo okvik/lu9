@@ -12,6 +12,8 @@ main(int argc, char *argv[])
 {
 	lua_State *L;
 	
+	setfcr(getfcr() & ~(FPZDIV | FPOVFL | FPINVAL));
+	
 	if((L = luaL_newstate()) == NULL)
 		sysfatal("out of memory");
 	luaL_openlibs(L);
