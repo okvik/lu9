@@ -2,11 +2,11 @@
 
 CFLAGS=-FTVw -p -Ishim -Ilua -Ilpeg -DLUA_USE_PLAN9
 
-TARG=$O.lua
+TARG=$O.lua9
 BIN=/$objtype/bin
 MOD=/sys/lib/lua
 
-OBJS=lua.$O
+OBJS=lua9.$O
 
 LIBS=\
 	lua/liblua.a$O\
@@ -26,9 +26,10 @@ pull:V:
 	@{cd shim; git/pull}
 
 install:V: $TARG
-	version=`{echo 'print(_VERSION:sub(-3))' | $TARG}
-	cp $TARG $BIN/lua
-	cp $TARG $BIN/lua$version
+	version=`{echo 'print(_VERSION)' | $TARG}
+	version=$version(2)
+	cp $TARG $BIN/lua9
+	cp $TARG $BIN/lua9-^$version
 	mkdir -p $MOD/$version
 
 clean:V:
