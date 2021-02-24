@@ -1,0 +1,132 @@
+.TH LUA9 1
+.SH NAME
+lua9 \- Lua standalone for Plan 9
+.SH SYNOPSIS
+.B lua9
+.RB [ -ivw ]
+.RI [ script ]
+.RI [ args
+.IR ... ]
+.SH DESCRIPTION
+.PP
+.I Lua9
+is an interpreter for Lua as a standalone language.
+It runs Lua scripts and provides a basic REPL for
+interactive usage.
+.PP
+In addition to standard Lua libraries it is packed
+with several others which are likely to be useful
+for writing Plan 9 programs.
+This includes the library of bindings for the
+.I Plan 9
+C library
+and the
+.IR lpeg
+text processing library.
+Others are likely to be included in the future,
+guided by user demand.
+.SH USAGE
+.B Lua9
+runs in script mode by default, loading the
+.I script
+file if given, or loading the script from standard input
+if not.
+Given the
+.B -i
+option an interactive REPL is entered after the script
+finishes, or immediately if no script is given.
+.PP
+A script (a line in interactive mode) is compiled as
+a Lua chunk and called with variable number of arguments
+.I args
+given after the
+.I script
+on the command line.
+The arguments are also loaded into the global
+.IR arg 
+table, with
+.B arg[0]
+holding the executable (not script) name, and the elements
+.B arg[1]
+to
+.B arg[N]
+holding the respective arguments.
+.PP
+The
+.B -w
+option turns on the Lua warning system.
+.PP
+The
+.B -v
+option prints Lua version and exits.
+.SS MODULES
+The default
+.B package.path
+is set to:
+.PP
+.EX
+/sys/lib/lua/5.4/?.lua
+/sys/lib/lua/5.4/?/init.lua
+\&./?.lua
+\&./?/init.lua
+.EE
+.PP
+The
+.B package.cpath
+does nothing, as dynamically loaded C modules aren't supported.
+.SH EXAMPLES
+.PP
+Run a script with three arguments:
+.PP
+.EX
+; lua9 main.lua a b c
+.EE
+.PP
+Same as above, entering REPL after the script finishes:
+.PP
+.EX
+; lua9 -i main.lua a b c
+.EE
+.PP
+Run REPL with command line arguments:
+.PP
+.EX
+; lua9 -i /dev/null a b c
+.EE
+.PP
+An executable Lua program can be created as expected:
+.PP
+.EX
+; cat /bin/prog
+#!/bin/lua9
+io.write("hello world\\n")
+; chmod +x /bin/prog
+; prog
+.EE
+.SH SEE ALSO
+.PP
+Lua Reference Manual \- https://lua.org/manual/5.4
+.SH SOURCE
+.PP
+The interpreter and libraries making up the wider "Lua9"
+project can be found at:
+.PP
+.EE
+https://sr.ht/~kvik/lua9/
+.EX
+.SH BUGS
+.PP
+The interpreter interface and runtime environment resembles
+but is incompatible with the official
+.BR lua (1)
+version -- this is largely intentional to keep the code and
+runtime behaviour simple. Compatibility features might be
+accepted if they prove necessary in practice.
+.PP
+The Plan 9 libc bindings are WIP.
+.PP
+There's no way to pre-compile Lua code, as with
+.BR luac (1) .
+Patches accepted.
+.PP
+REPL is crude.  Patches accepted.
