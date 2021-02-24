@@ -9,9 +9,9 @@ MOD=/sys/lib/lua
 OBJS=lua9.$O
 
 LIBS=\
-	lua/liblua.a$O\
-	lpeg/liblpeg.a$O\
-	shim/libshim.a$O
+	lua/liblua.a.$O\
+	lpeg/liblpeg.a.$O\
+	shim/libshim.a.$O
 
 all:V: $TARG
 
@@ -36,15 +36,15 @@ clean:V:
 	@{cd shim; mk clean}
 	@{cd lua; mk clean}
 	@{cd lpeg; mk clean}
-	rm -f $TARG [$OS].out *.[$OS] *.a[$OS]
+	rm -f $TARG [$OS].out *.[$OS] *.a.[$OS]
 
-shim/libshim.a$O:
+shim/libshim.a.$O:
 	@{cd shim; mk}
 
-lua/liblua.a$O:
+lua/liblua.a.$O:
 	@{cd lua; mk}
 
-lpeg/liblpeg.a$O:
+lpeg/liblpeg.a.$O:
 	@{cd lpeg; mk}
 
 $TARG: $OBJS $LIBS
