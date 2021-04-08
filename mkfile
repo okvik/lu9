@@ -6,7 +6,7 @@ TARG=$O.lu9
 BIN=/$objtype/bin
 MOD=/sys/lib/lua
 
-OBJS=lua9.$O
+OBJS=lu9.$O
 
 LIBS=\
 	lua/liblua.a.$O\
