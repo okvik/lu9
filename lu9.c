@@ -6,6 +6,15 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
+extern int luaopen_p9(lua_State*);
+extern int luaopen_lpeg(lua_State*);
+
+luaL_Reg preloadlibs[] = {
+	{"p9.raw", luaopen_p9},
+	{"lpeg", luaopen_lpeg},
+	{nil, nil}
+};
+
 char flag[] = {
 	['i'] = 0, /* interactive */
 	['v'] = 0, /* print version */
@@ -134,14 +143,30 @@ luamain(lua_State *L)
 	
 	if(flag['w'])
 		lua_warning(L, "@on", 0);
+	
+	/* GC in generational mode */
+	lua_gc(L, LUA_GCGEN, 0, 0);
 
 	/* Signal for libraries to ignore LUA_* env. vars */
 	lua_pushboolean(L, 1);
 	lua_setfield(L, LUA_REGISTRYINDEX, "LUA_NOENV");
-	luaL_openlibs(L);
 	
-	/* GC in generational mode */
-	lua_gc(L, LUA_GCGEN, 0, 0);
+	luaL_openlibs(L);
+	/*
+	 * Preload additional libraries.
+	 * Because dynamic loading of C libraries is not
+	 * supported these must be manually loaded by the host,
+	 * as in the case of standard libraries above.
+	 * An alternative is to register library loaders in the
+	 * package.preload table, which makes them run at the
+	 * time the program requires the library.
+	 */
+	luaL_getsubtable(L, LUA_REGISTRYINDEX, LUA_PRELOAD_TABLE);
+	for(luaL_Reg *lib = preloadlibs; lib->func; lib++){
+		lua_pushcfunction(L, lib->func);
+		lua_setfield(L, -2, lib->name);
+	}
+	lua_pop(L, 1);
 	
 	/* Create global 'arg' table */
 	lua_createtable(L, argc, 0);
@@ -175,17 +200,20 @@ main(int argc, char *argv[])
 	
 	ARGBEGIN{
 	case 'i': flag['i'] = 1; break;
-	case 'v': flag['v'] = 1; break;
+	case 'v': flag['v'] += 1; break;
 	case 'w': flag['w'] = 1; break;
 	default: usage();
 	}ARGEND;
 	if(flag['v']){
-		print("%s\n", LUA_COPYRIGHT);
+		if(flag['v'] == 1)
+			print("%s\n", LUA_VERSION_MAJOR "." LUA_VERSION_MINOR);
+		else
+			print("%s\n", LUA_RELEASE);
 		exits(nil);
 	}
 
 	setfcr(getfcr() & ~(FPZDIV | FPOVFL | FPINVAL));
-	if((L = luaL_newstate()) == NULL)
+	if((L = luaL_newstate()) == nil)
 		sysfatal("out of memory");
 	lua_pushcfunction(L, luamain);
 	lua_pushinteger(L, argc);
