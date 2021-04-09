@@ -49,3 +49,8 @@ Check the [lu9(1) manual page](http://a-b.xyz/man/1/lu9) for more
 information.
 
 	; man lu9
+
+## Legal
+
+All of my original work is released under the MIT license, the same
+license used by Lua and LPeg.
