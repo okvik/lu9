@@ -1,4 +1,4 @@
-.TH LUA9 1
+.TH LU9 1
 .SH NAME
 lu9 \- Lua standalone for Plan 9
 .SH SYNOPSIS
