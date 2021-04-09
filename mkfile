@@ -5,6 +5,7 @@ CFLAGS=-FTVw -p -Ilua/shim -Ilua -Ilpeg -DLUA_USE_PLAN9
 TARG=$O.lu9
 BIN=/$objtype/bin
 MOD=/sys/lib/lua
+MAN=/sys/man
 
 OBJS=lu9.$O
 
@@ -25,7 +26,7 @@ pull:V:
 	@{cd lpeg; git/pull}
 	@{cd p9; git/pull}
 
-install:V: $TARG
+install:V: $TARG $MAN/1/lu9
 	luav=`{$TARG -v}
 	cp $TARG $BIN/lu9
 	cp $TARG $BIN/lu9-^$luav
@@ -45,6 +46,9 @@ lpeg/liblpeg.a.$O:
 	
 p9/libp9.a.$O:
 	@{cd p9; mk}
+	
+$MAN/1/%: %.man
+	cp $stem.man $target
 
 $TARG: $OBJS $LIBS
 	$LD -o $TARG $prereq

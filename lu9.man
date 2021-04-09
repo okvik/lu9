@@ -1,15 +1,15 @@
 .TH LUA9 1
 .SH NAME
-lua9 \- Lua standalone for Plan 9
+lu9 \- Lua standalone for Plan 9
 .SH SYNOPSIS
-.B lua9
+.B lu9
 .RB [ -ivw ]
 .RI [ script ]
 .RI [ args
 .IR ... ]
 .SH DESCRIPTION
 .PP
-.I Lua9
+.I lu9
 is an interpreter for Lua as a standalone language.
 It runs Lua scripts and provides a basic REPL for
 interactive usage.
@@ -26,7 +26,7 @@ text processing library.
 Others are likely to be included in the future,
 guided by user demand.
 .SH USAGE
-.B Lua9
+.B lu9
 runs in script mode by default, loading the
 .I script
 file if given, or loading the script from standard input
@@ -79,26 +79,26 @@ does nothing, as dynamically loaded C modules aren't supported.
 Run a script with three arguments:
 .PP
 .EX
-; lua9 main.lua a b c
+; lu9 main.lua a b c
 .EE
 .PP
 Same as above, entering REPL after the script finishes:
 .PP
 .EX
-; lua9 -i main.lua a b c
+; lu9 -i main.lua a b c
 .EE
 .PP
 Run REPL with command line arguments:
 .PP
 .EX
-; lua9 -i /dev/null a b c
+; lu9 -i /dev/null a b c
 .EE
 .PP
 An executable Lua program can be created as expected:
 .PP
 .EX
 ; cat /bin/prog
-#!/bin/lua9
+#!/bin/lu9
 io.write("hello world\\n")
 ; chmod +x /bin/prog
 ; prog
@@ -108,11 +108,11 @@ io.write("hello world\\n")
 Lua Reference Manual \- https://lua.org/manual/5.4
 .SH SOURCE
 .PP
-The interpreter and libraries making up the wider "Lua9"
+The interpreter and libraries making up the wider "lu9"
 project can be found at:
 .PP
 .EE
-https://sr.ht/~kvik/lua9/
+https://sr.ht/~kvik/lu9/
 .EX
 .SH BUGS
 .PP
