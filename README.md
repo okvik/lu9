@@ -28,20 +28,15 @@ Check the respective repositories for more information.
 
 ### Building and installing
 
-Building and installing lu9 is simple: clone this repository and run
-`mk install`.  The build will automatically clone and build all the
-dependencies.
+Building and installing lu9 is simple: grab this repository,
+pull the dependencies, and run `mk install`.
 
 	; git/clone https://git.sr.ht/~kvik/lu9
-	; mk install
-
-Only lu9 binary and Lua modules get installed into the system.
-The binary is statically linked so no C libraries have to be installed.
-
-The provided `mkfile` can pull any updates to lu9 and its dependencies.
-
 	; mk pull
 	; mk install
+
+Only the lu9 binary and Lua modules get installed into the system.
+The binary is statically linked so no C libraries have to be installed.
 
 ### Usage
 

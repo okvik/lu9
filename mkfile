@@ -16,15 +16,13 @@ LIBS=\
 
 all:V: $TARG
 
-clone:V:
-	git/clone https://git.sr.ht/~kvik/lu9-lua lua
-	git/clone https://git.sr.ht/~kvik/lu9-lpeg lpeg
-	git/clone https://git.sr.ht/~kvik/lu9-p9 p9
-
 pull:V:
-	@{cd lua; git/pull}
-	@{cd lpeg; git/pull}
-	@{cd p9; git/pull}
+	@{if(test -d lua){cd lua; git/pull}
+	  if not git/clone https://git.sr.ht/~kvik/lu9-lua lua}
+	@{if(test -d lpeg){cd lpeg; git/pull}
+	  if not git/clone https://git.sr.ht/~kvik/lu9-lpeg lpeg}
+	@{if(test -d p9){cd p9; git/pull}
+	  if not git/clone https://git.sr.ht/~kvik/lu9-p9 p9}
 
 install:V: $TARG $MAN/1/lu9
 	luav=`{$TARG -v}
