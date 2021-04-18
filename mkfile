@@ -24,13 +24,13 @@ pull:V:
 	@{if(test -d p9){cd p9; git/pull}
 	  if not git/clone https://git.sr.ht/~kvik/lu9-p9 p9}
 
-install:V: $TARG $MAN/1/lu9
+install:QV: $TARG $MAN/1/lu9
 	luav=`{$TARG -v}
 	cp $TARG $BIN/lu9
 	cp $TARG $BIN/lu9-^$luav
 	mkdir -p $MOD/$luav
 
-clean:V:
+clean:QV:
 	@{cd lua; mk clean}
 	@{cd lpeg; mk clean}
 	@{cd p9; mk clean}
