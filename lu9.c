@@ -10,7 +10,7 @@ extern int luaopen_p9(lua_State*);
 extern int luaopen_lpeg(lua_State*);
 
 luaL_Reg preloadlibs[] = {
-	{"p9.raw", luaopen_p9},
+	{"p9", luaopen_p9},
 	{"lpeg", luaopen_lpeg},
 	{nil, nil}
 };
