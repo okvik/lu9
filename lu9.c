@@ -7,10 +7,12 @@
 #include <lualib.h>
 
 extern int luaopen_p9(lua_State*);
+extern int luaopen_p9_note(lua_State*);
 extern int luaopen_lpeg(lua_State*);
 
 luaL_Reg preloadlibs[] = {
 	{"p9", luaopen_p9},
+	{"p9.note", luaopen_p9_note},
 	{"lpeg", luaopen_lpeg},
 	{nil, nil}
 };
