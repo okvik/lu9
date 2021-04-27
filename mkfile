@@ -34,7 +34,7 @@ clean:QV:
 	@{cd lua; mk clean}
 	@{cd lpeg; mk clean}
 	@{cd p9; mk clean}
-	rm -f $TARG [$OS].out *.[$OS] *.a.[$OS]
+	rm -f [$OS].* *.[$OS] *.a.[$OS]
 
 lua/liblua.a.$O:
 	@{cd lua; mk}
