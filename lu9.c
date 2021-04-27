@@ -18,6 +18,7 @@ luaL_Reg preloadlibs[] = {
 };
 
 char flag[] = {
+	['c'] = 0, /* bytecode dump */
 	['i'] = 0, /* interactive */
 	['v'] = 0, /* print version */
 	['w'] = 0, /* enable warnings */
@@ -134,6 +135,33 @@ runfile(lua_State *L, char *file)
 }
 
 int
+dumpwriter(lua_State *, const void *p, size_t sz, void *data)
+{
+	Biobuf *w;
+	
+	w = data;
+	if(sz != 0 && Bwrite(w, p, sz) != sz)
+		return -1;
+	return 0;
+}
+
+int
+dumpfile(lua_State *L, char *file)
+{
+	int r;
+	Biobuf w;
+	
+	if((r = luaL_loadfile(L, file)) != LUA_OK)
+		luaerror(L);
+	if(Binit(&w, 1, OWRITE) == -1)
+		sysfatal("Binit: %r");
+	if(lua_dump(L, dumpwriter, &w, 0) == -1)
+		sysfatal("dump: %r");
+	Bterm(&w);
+	return r;
+}
+
+int
 luamain(lua_State *L)
 {
 	int argc, i;
@@ -143,11 +171,17 @@ luamain(lua_State *L)
 	argv = lua_touserdata(L, 2);
 	file = argv[0];
 	
-	if(flag['w'])
-		lua_warning(L, "@on", 0);
-	
 	/* GC in generational mode */
 	lua_gc(L, LUA_GCGEN, 0, 0);
+	
+	if(flag['c']){
+		dumpfile(L, file);
+		lua_pushboolean(L, 1);
+		return 1;
+	}
+	
+	if(flag['w'])
+		lua_warning(L, "@on", 0);
 
 	/* Signal for libraries to ignore LUA_* env. vars */
 	lua_pushboolean(L, 1);
@@ -201,6 +235,7 @@ main(int argc, char *argv[])
 	lua_State *L;
 	
 	ARGBEGIN{
+	case 'c': flag['c'] = 1; break;
 	case 'i': flag['i'] = 1; break;
 	case 'v': flag['v'] += 1; break;
 	case 'w': flag['w'] = 1; break;
