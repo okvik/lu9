@@ -108,7 +108,9 @@ runrepl(lua_State *L)
 		sysfatal("Binit: %r");
 	r = LUA_OK;
 	while(fprint(2, "> "), (ln = Brdstr(&bin, '\n', 1)) != nil){
-		if(luaL_loadstring(L, ln) != LUA_OK){
+		r = luaL_loadstring(L, ln);
+		free(ln);
+		if(r != LUA_OK){
 			luaerror(L);
 			continue;
 		}
