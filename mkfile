@@ -1,5 +1,7 @@
 </$objtype/mkfile
 
+VERSION=5.4
+
 CFLAGS=-FTVw -p -Ilua/shim -Ilua -Ilpeg -DLUA_USE_PLAN9
 
 TARG=$O.lu9
@@ -25,10 +27,9 @@ pull:V:
 	  if not git/clone https://git.sr.ht/~kvik/lu9-p9 p9}
 
 install:QV: $TARG $MAN/1/lu9
-	luav=`{$TARG -v}
 	cp $TARG $BIN/lu9
-	cp $TARG $BIN/lu9-^$luav
-	mkdir -p $MOD/$luav
+	cp $TARG $BIN/lu9-^$VERSION
+	mkdir -p $MOD/$VERSION
 
 clean:QV:
 	@{cd lua; mk clean}
