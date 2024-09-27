@@ -1,3 +1,9 @@
+# This repository is inactive
+
+lu9 has been renamed to luix and its components placed into a single
+repository for easier maintenance and visibility:
+https://github.com/okvik/luix
+
 # lu9 -- Lua for Plan 9 space
 
 lu9 is an umbrella project providing a native Plan 9 port of the Lua
